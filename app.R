@@ -8,11 +8,18 @@ ui <- fluidPage(
    sidebarLayout(
       sidebarPanel(
          sliderInput("power",
-                     "Power adjustment",
+                     "Power Adjustment",
                      min = 0,
                      max = 1,
-                     value = 1, step = 0.1)
-      ),
+                     value = 1, step = 0.1),
+         sliderInput("num_breaks",
+                     "Number of Breaks",
+                     min = 1,
+                     max = 50,
+                     value = 20,
+                     step = 1)
+      
+         ),
 
       mainPanel(
          plotOutput("distPlot")
@@ -23,10 +30,9 @@ ui <- fluidPage(
 server <- function(input, output) {
 
    output$distPlot <- renderPlot({
-      denominator <- 30
-      numerator <- floor(grades*denominator/100)
-      finalMark <- (numerator/denominator)^input$power*denominator
-      hist(finalMark, breaks = 12, xlab = "Mark (out of 30)", main = "Histogram of Grades after adjustment")
+      numerator <- grades/100
+      finalMark <- (numerator)^input$power*100
+      hist(finalMark, breaks = input$num_breaks, xlab = "Mark %", main = "Histogram of Grades after adjustment")
    })
 }
 
