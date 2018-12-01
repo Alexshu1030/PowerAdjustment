@@ -7,6 +7,7 @@ ui <- fluidPage(
    titlePanel("Power Adjustment"),
    sidebarLayout(
       sidebarPanel(
+        textOutput("equation"),
          sliderInput("power",
                      "Power Adjustment",
                      min = 0,
@@ -28,6 +29,10 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
+  
+  output$equation <- renderText({
+    paste0("(m/T)^",input$power ,"*T where the mark is m/T")
+  })
 
    output$distPlot <- renderPlot({
       numerator <- grades/100
