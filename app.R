@@ -7,6 +7,7 @@ ui <- fluidPage(
    titlePanel("Power vs Linear Adjustment"),
    sidebarLayout(
       sidebarPanel(
+        textOutput("equation"),
          sliderInput("power",
                      "Power Adjustment",
                      min = 0,
@@ -36,15 +37,19 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
-  output$linPlot <- renderPlot({
-    finalMark <- input$linAdd + grades
-    hist(finalMark, breaks = input$num_breaks, xlab= "Mark %", main = "Historgram of Grades after Linear Adjustment")
+  output$equation <- renderText({
+    paste0("(m/T)^",input$power ,"*T where the mark is m/T")
   })
 
    output$distPlot <- renderPlot({
       numerator <- grades/100
       finalMark <- (numerator)^input$power*100
       hist(finalMark, breaks = input$num_breaks, xlab = "Mark %", main = "Histogram of Grades after Poewr Adjustment")
+   })
+
+   output$linPlot <- renderPlot({
+     finalMark <- input$linAdd + grades
+     hist(finalMark, breaks = input$num_breaks, xlab= "Mark %", main = "Historgram of Grades after Linear Adjustment")
    })
 }
 
